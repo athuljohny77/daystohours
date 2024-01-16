@@ -153,7 +153,10 @@ toggle_button.clicked.connect(toggle_calculation)
 # Connect the info button's click event to open_info_window
 info_button.clicked.connect(open_info_window)
 
-# Initially, set the conversion mode to man days
+# Connect the Enter key press event to the convert_button click event
+man_days_input.returnPressed.connect(convert_button.click)
+
+# Connect the Convert button click event to the appropriate function
 convert_button.clicked.connect(man_days_to_hours)
 
 # Create layout
