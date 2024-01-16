@@ -54,7 +54,7 @@ def open_info_window():
     info_dialog.setStyleSheet(f"background-color: {window.styleSheet().split(':')[1]};")
 
     layout = QVBoxLayout()
-    version_label = QLabel("Ver 2.0.0")
+    version_label = QLabel("Ver 2.0.1")
     version_label.setStyleSheet("color: white; font-size: 14px;")
     developer_label = QLabel('<a href="https://www.athuljohny.in" style="color: #FFFF00; text-decoration: none; font-size: 16px;">www.athuljohny.in</a>')
     developer_label.setOpenExternalLinks(True)  # Enable opening links in a web browser
