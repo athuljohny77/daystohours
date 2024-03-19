@@ -39,6 +39,10 @@ def toggle_calculation():
         toggle_button.setIcon(QIcon(icon_path("hours_to_man.png")))
         toggle_button.setStyleSheet("background-color: transparent; border: none;")
 
+# Function to clear the input field
+def clear_fields():
+    man_days_input.clear()
+
 # Function to get the full path for icon and image files
 def icon_path(file_name):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -54,7 +58,7 @@ def open_info_window():
     info_dialog.setStyleSheet(f"background-color: {window.styleSheet().split(':')[1]};")
 
     layout = QVBoxLayout()
-    version_label = QLabel("Ver 2.0.1")
+    version_label = QLabel("Ver 2.0.2")
     version_label.setStyleSheet("color: white; font-size: 14px;")
     developer_label = QLabel('<a href="https://www.athuljohny.in" style="color: #FFFF00; text-decoration: none; font-size: 16px;">www.athuljohny.in</a>')
     developer_label.setOpenExternalLinks(True)  # Enable opening links in a web browser
@@ -115,17 +119,13 @@ window.setStyleSheet("background-color: #20452e;")
 man_days_input = QLineEdit()
 toggle_button = QPushButton()
 convert_button = QPushButton("Convert")
-
-# Set the initial result text to "Please enter a number."
-result_label = QLabel("Please enter a number.")
-
-label_man_days = QLabel("Enter Man Days:")
+clear_button = QPushButton("Clear")  # Create the Clear button
 
 # Set widget styles for dark mode
-widgets = [man_days_input, convert_button]
+widgets = [man_days_input, convert_button, clear_button]  # Include clear_button in the widgets list
 for widget in widgets:
     widget.setStyleSheet(
-        "color: white; background-color: #353535; border: 2px solid #FFFFFF; border-radius: 10px; font-size: 16px; padding: 5px;"
+        "color: white; background-color: #2e2e2e; border: 1px solid #FFFFFF; border-radius: 15px; font-size: 16px; padding: 5px;"
     )
 
 # Set the button as a toggle button and use hours_to_man.png initially
@@ -135,17 +135,21 @@ toggle_button.setIconSize(QSize(40, 40))
 toggle_button.setToolTip("Toggle Calculation Mode")
 
 # Remove default style (border and background) from the input title text
+label_man_days = QLabel("Enter Man Days:")
 label_man_days.setStyleSheet("color: white; background-color: transparent; border: none; font-size: 16px;")
 
 # Remove default style (border and background) from the info button
 toggle_button.setStyleSheet("background-color: transparent; border: none;")
 
-# Set the same style for the info button as the toggle button
+# Create the info button
 info_button = QPushButton()
 info_button.setIcon(QIcon(icon_path("info.png")))  # Replace with the path to your info button icon
 info_button.setFixedSize(40, 40)  # Set the size of the info button
 info_button.setStyleSheet("background-color: transparent; border: none;")
 info_button.setToolTip("About")
+
+# Calculate half of the Clear button's current width and set it as the new fixed width
+clear_button.setFixedWidth(clear_button.sizeHint().width() // 0.5)
 
 # Connect the button click to toggle calculation mode
 toggle_button.clicked.connect(toggle_calculation)
@@ -159,27 +163,31 @@ man_days_input.returnPressed.connect(convert_button.click)
 # Connect the Convert button click event to the appropriate function
 convert_button.clicked.connect(man_days_to_hours)
 
+# Connect the Clear button click event to clear_fields function
+clear_button.clicked.connect(clear_fields)
+
 # Create layout
 input_layout = QHBoxLayout()
 input_layout.addWidget(label_man_days)
 input_layout.addWidget(man_days_input)
 input_layout.addWidget(toggle_button)
 
+# Adjust the layout to accommodate the Clear button
 button_layout = QHBoxLayout()
+button_layout.addWidget(clear_button)
 button_layout.addWidget(convert_button)
-button_layout.addWidget(info_button)  # Add the info button to the layout
+button_layout.addWidget(info_button)
 
 main_layout = QVBoxLayout()
 main_layout.addLayout(input_layout)
 main_layout.addLayout(button_layout)
 
-result_label.setFont(QFont("Arial", 12))  # Adjust font size to 12px
-result_label.setStyleSheet("color: white; padding-top: 0px; padding-bottom: 0px;")  # Remove padding
+# Create the result label and adjust its font size and style
+result_label = QLabel("Please enter a number.")
+result_label.setFont(QFont("Arial", 12))
+result_label.setStyleSheet("color: white; padding-top: 0px; padding-bottom: 0px;") 
 
 main_layout.addWidget(result_label)
-
-frame = QFrame()
-frame.setLayout(main_layout)
 
 # Set the layout for the window
 window.setLayout(main_layout)
